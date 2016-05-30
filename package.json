@@ -1,0 +1,100 @@
+{
+  "name": "vscode-xml",
+  "displayName": "vscode-xml",
+  "description": "XML schema-based intellisense",
+  "version": "0.0.1",
+  "publisher": "Tyriar",
+  "engines": {
+    "vscode": "^1.0.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onLanguage:xml"
+  ],
+  "main": "./out/src/extension",
+  "contributes": {
+    "commands": [
+      {
+        "command": "extension.sayHello",
+        "title": "Hello World"
+      }
+    ],
+    "languages": [{
+        "id": "xml",
+        "extensions": [
+            ".ascx",
+            ".atom",
+            ".axml",
+            ".bpmn",
+            ".config",
+            ".cpt",
+            ".csl",
+            ".csproj",
+            ".csproj.user",
+            ".dita",
+            ".ditamap",
+            ".dtd",
+            ".dtml",
+            ".fsproj",
+            ".fxml",
+            ".iml",
+            ".isml",
+            ".jmx",
+            ".launch",
+            ".menu",
+            ".mxml",
+            ".nuspec",
+            ".opml",
+            ".owl",
+            ".proj",
+            ".pt",
+            ".pubxml",
+            ".pubxml.user",
+            ".rdf",
+            ".rng",
+            ".rss",
+            ".shproj",
+            ".storyboard",
+            ".svg",
+            ".targets",
+            ".tld",
+            ".vbproj",
+            ".vbproj.user",
+            ".vcxproj",
+            ".vcxproj.filters",
+            ".wsdl",
+            ".wxi",
+            ".wxl",
+            ".wxs",
+            ".xaml",
+            ".xbl",
+            ".xib",
+            ".xlf",
+            ".xliff",
+            ".xml",
+            ".xpdl",
+            ".xsd",
+            ".xul",
+            ".xoml"
+        ],
+        "aliases": [ "XML", "xml" ],
+        "firstLine": "(\\<\\?xml.*)|(\\<svg)|(\\<\\!doctype\\s+svg)",
+        "configuration": "./xml.configuration.json"
+    }]
+  },
+  "scripts": {
+    "vscode:prepublish": "node ./node_modules/vscode/bin/compile",
+    "compile": "node ./node_modules/vscode/bin/compile -watch -p ./",
+    "postinstall": "node ./node_modules/vscode/bin/install"
+  },
+  "devDependencies": {
+    "typescript": "^1.8.5",
+    "vscode": "^0.11.0"
+  },
+  "dependencies": {
+    "uuid": "^2.0.2",
+    "xml2js": "^0.4.16"
+  }
+}
