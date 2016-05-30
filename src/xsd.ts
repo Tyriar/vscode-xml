@@ -136,4 +136,63 @@ export class Xsd {
 
         return suggestion;
     }
+
+    // Called when suggestion requested for attributes.
+    public getAttributes(xpath) {
+        // Get the XSD type name from the tag name.
+        let type = this.findTypeFromXPath(xpath);
+        if (!type) {
+            return [];
+        }
+
+        // Create list of suggestions from attributes
+        let suggestions = []
+        type.xsdAttributes.forEach((attr) => {
+            suggestions.push({
+                text: attr.description,
+                displayText: attr.name,
+                type: 'attribute',
+                rightLabel: 'Attribute'
+            });
+        });
+        return suggestions;
+    }
+
+    public getAttributeValues(xpath, attrName) {
+        // Get the XSD type name of the tag name
+        let type = this.findTypeFromXPath(xpath);
+        if (!type) {
+            return []
+        }
+
+        // Get the attribute type
+        
+        let attributes = type.xsdAttributes.filter((attr) => {
+            return attr.name === attrName
+        });
+        if (attributes.length === 0) {
+            return [];
+        }
+        let attrType = this.types[attributes[0].type];
+        if (!attrType) {
+            return [];
+        }
+
+        // Create list of suggestions from childrens
+        // TODO: Represent groups in autocompletion
+        let suggestions = []
+        attrType.xsdChildren.forEach((group) => {
+            group.elements.forEach((el) => {
+                suggestions.push({
+                    text: el.tagName,
+                    displayText: el.tagName,
+                    type: 'value',
+                    rightLabel: 'Value'
+                }); 
+            });
+        });
+
+        // Remove undefined elements (e.g.: non-supported yet types).
+        return suggestions.filter((n) => n !== undefined);
+    }
 }
