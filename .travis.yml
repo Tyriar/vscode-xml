@@ -8,4 +8,5 @@ install:
   - npm install
 
 script:
+  - tsc -p .
   - npm test
