@@ -26,9 +26,7 @@ export class XmlCompletionItemProvider implements CompletionItemProvider {
       return Promise.resolve(this.getAttributeValueCompletions(document, position));
     } else if (this.isAttribute(document, position)) {
       return Promise.resolve(this.getAttributeCompletions(document, position));
-    }/* else if (this.isTagValue(document, position)) {
-      return Promise.resolve(this.getValuesCompletions(document, position));
-    }*/
+    }
     return Promise.resolve([]);
   }
 
