@@ -15,12 +15,12 @@ let fullPattern = new RegExp("(" +
 
 
 // Get the full XPath to the current tag.
-export function getXPath(document: TextDocument, position: Position): any[] {
+export function getXPath(document: TextDocument, position: Position): string[] {
   // For every row, checks if it's an open, close, or autoopenclose tag and
   // update a list of all the open tags.
   //{row, column} = bufferPosition
-  let xpath = [];
-  let skipList = [];
+  let xpath: string[] = [];
+  let skipList: string[] = [];
   let waitingStartTag = false;
   let waitingStartComment = false;
 
