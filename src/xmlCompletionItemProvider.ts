@@ -18,10 +18,8 @@ export class XmlCompletionItemProvider implements CompletionItemProvider {
   }
 
   private getSuggestions(document: TextDocument, position: Position, token: CancellationToken): Promise<CompletionItem[]> {
-    if (this.isTagName(document, position)) {
-      return Promise.resolve(this.getTagNameCompletions(document, position, token));
-    } else if (this.isClosingTagName(document, position)) {
-      return Promise.resolve(this.getClosingTagNameCompletions(document, position));
+    if (this.isTagName(document, position) || this.isClosingTagName(document, position)) {
+      return Promise.resolve(this.getTagNameCompletions(document, position, token).concat(this.getClosingTagNameCompletions(document, position)));
     } else if (this.isAttributeValue(document, position)) {
       return Promise.resolve(this.getAttributeValueCompletions(document, position));
     } else if (this.isAttribute(document, position)) {
@@ -90,7 +88,7 @@ export class XmlCompletionItemProvider implements CompletionItemProvider {
   private getClosingTagNameCompletions(document: TextDocument, position: Position): CompletionItem[] {
     let xPath = getXPath(document, position);
     let parentTag = xPath[xPath.length - 1];
-    let suggestion = new CompletionItem(parentTag);
+    let suggestion = new CompletionItem('/' + parentTag);
     suggestion.detail = 'Closing tag';
     return [suggestion];
   }
