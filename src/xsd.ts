@@ -1,4 +1,6 @@
 import fs = require('fs');
+import http = require('http');
+import https = require('https');
 import path = require('path');
 import {Uri} from 'vscode';
 import {XsdParser} from './xsdParser';
@@ -8,22 +10,35 @@ export class Xsd {
   private types: any = {};
 
   public load(xmlUri: Uri, xsdUri: Uri): Promise<boolean> {
-    if (xsdUri.scheme) {
-      // TODO: Download
-      return Promise.resolve(false);
-    } else {
-      // Local
-      let baseDir: string = path.dirname(xmlUri.fsPath);
-      // TODO: Handle absolute paths
-      fs.readFile(path.join(baseDir, xsdUri.fsPath), (err, data) => {
-        if (err) {
+    return new Promise<boolean>((resolve) => {
+      if (xsdUri.scheme) {
+        let protocol = xsdUri.scheme === 'http' ? http : https;
+        protocol.get(xsdUri.toString(), (res) => {
+          let body = '';
+          res.on('data', (chunk) => {
+            body += chunk;
+          });
+          res.on('end', () => {
+            resolve(this.parseFromString(body));
+          });
+        }).on('error', (err) => {
           console.error(err);
-          return Promise.resolve(false);
-        }
+          resolve(false);
+        });
+      } else {
+        // Local
+        let baseDir: string = path.dirname(xmlUri.fsPath);
+        // TODO: Handle absolute paths
+        fs.readFile(path.join(baseDir, xsdUri.fsPath), (err, data) => {
+          if (err) {
+            console.error(err);
+            resolve(false);
+          }
 
-        return this.parseFromString(data);
-      });
-    }
+          resolve(this.parseFromString(data));
+        });
+      }
+    });
   }
 
   private parseFromString(data): Promise<boolean> {
