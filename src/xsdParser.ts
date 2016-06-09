@@ -66,7 +66,7 @@ export class XsdParser {
     let rootType = this.types[rootElement.xsdTypeName]
 
     let root = new XsdType(null, rootElement.xsdTypeName);
-    root.description = rootElement.description ? rootElement.description : rootType.description;
+    root.description = rootElement.description != null ? rootElement.description : rootType.description;
     root.text = rootTagName;
     root.displayText = rootTagName;
     root.type = 'class';
